@@ -1,0 +1,120 @@
+
+%*****************CARREGAR VARIÁVEIS DIR *************************%  
+
+load dir_copa.mat
+load hs_copa.mat
+
+for j = 4:7    %Dia%
+    for i = 0:3:21 %Hora%
+     if i<12
+      eval(['DIR_2015080' num2str(j) '_0' num2str(i) '0000 = double(DIR_2015080' num2str(j) '_0' num2str(i) '0000);'])
+       else 
+      eval(['DIR_2015080' num2str(j) '_' num2str(i) '0000 = double(DIR_2015080' num2str(j) '_' num2str(i) '0000);'])
+     end
+    end 
+end
+
+%*******************RECORTAR DIR COPA ********************%
+
+for j = 4:7
+for i = 0:3:21
+  if i < 12
+    eval(['DIR_2015080' num2str(j) '_0' num2str(i) '0000 = DIR_2015080' num2str(j) '_0' num2str(i) '0000(91:120,134:170);'])
+  else
+    eval(['DIR_2015080' num2str(j) '_' num2str(i) '0000 = DIR_2015080' num2str(j) '_' num2str(i) '0000(91:120,134:170);'])
+  end
+end
+end
+
+
+%% ************ CONVERTE AS VARIÁVEIS 'DIR' DE GRAUS PARA METROS (U_V) LOOPING ******%
+              % É NECESSÁRIO ATUALIZAR AS DATAS NOS NOMES DAS VARIÁVEIS %
+
+
+for y = 4:7;     %DIAS%                             
+for x = 0:3:21;  %HORAS%
+if x < 12;
+eval(['kk = isnan(DIR_2015080' num2str(y) '_0' num2str(x) '0000);'])   %*** VARIÁVEL 'DIR' ***%
+eval(['int = ones(size(DIR_2015080' num2str(y) '_0' num2str(x) '0000));'])  %*** VARIÁVEL 'DIR' ***%
+
+for i = 1:30
+    for j = 1:37
+        if kk (i,j) == 1;
+%             int (kk) = NaN;
+            eval(['DIR_2015080' num2str(y) '_0' num2str(x) '0000 (kk) = 0;'])  %*** VARIÁVEL 'DIR' ***%
+            int (kk) = 0;
+        end
+    end
+end
+
+
+uu = [];
+vv = [];
+
+for j = 1:37
+    eval(['c = DIR_2015080' num2str(y) '_0' num2str(x) '0000;'])  %*** VARIÁVEL 'DIR' ***%
+    d = squeeze(c(:,j));
+    i = squeeze(int(:,j));
+    [u v] = compass2cart(d,i);
+    uu = [uu,u];
+    vv = [vv,v];
+end
+ 
+% uu = uu';
+% vv = vv';
+
+for i = 1:30
+    for j = 1:37
+        if kk (i,j) == 1;
+            uu (kk) = NaN;
+            vv (kk) = NaN;
+        end
+    end
+end
+
+eval(['uvel_2015080' num2str(y) '_0' num2str(x) '0000 = uu * (-1);']) %*** VARIÁVEL RESULTANTE ***%
+eval(['vvel_2015080' num2str(y) '_0' num2str(x) '0000 = vv * (-1);']) %*** VARIÁVEL RESULTANTE ***%
+else
+eval(['kk = isnan(DIR_2015080' num2str(y) '_' num2str(x) '0000);']) %*** VARIÁVEL 'DIR' ***%
+eval(['int = ones(size(DIR_2015080' num2str(y) '_' num2str(x) '0000));'])  %*** VARIÁVEL 'DIR' ***%
+
+for i = 1:30
+    for j = 1:37
+        if kk (i,j) == 1;
+%             int (kk) = NaN;
+            eval(['DIR_2015080' num2str(y) '_' num2str(x) '0000 (kk) = 0;'])  %*** VARIÁVEL 'DIR' ***%
+            int (kk) = 0;
+        end
+    end
+end
+
+
+uu = [];
+vv = [];
+
+for j = 1:37
+    eval(['c = DIR_2015080' num2str(y) '_' num2str(x) '0000;'])  %*** VARIÁVEL 'DIR' ***%
+    d = squeeze(c(:,j));
+    i = squeeze(int(:,j));
+    [u v] = compass2cart(d,i);
+    uu = [uu,u];
+    vv = [vv,v];
+end
+ 
+% uu = uu';
+% vv = vv';
+
+for i = 1:30
+    for j = 1:37
+        if kk (i,j) == 1;
+            uu (kk) = NaN;
+            vv (kk) = NaN;
+        end
+    end
+end
+
+eval(['uvel_2015080' num2str(y) '_' num2str(x) '0000 = uu * (-1);'])  %*** VARIÁVEL RESULTANTE ***%
+eval(['vvel_2015080' num2str(y) '_' num2str(x) '0000 = vv * (-1);'])  %*** VARIÁVEL RESULTANTE ***%
+end
+end
+end

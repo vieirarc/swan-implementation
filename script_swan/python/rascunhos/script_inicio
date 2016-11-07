@@ -1,0 +1,24 @@
+cd /home/rafael/Documentos/lamce/simulacoes_swan/20150921
+
+import numpy as np
+import scipy.io as sio
+import matplotlib.pyplot as plt
+
+'''
+sio.loadmat -> carrega arquivo .mat
+sio.savemat -> salva arquivo .mat
+sio.whosmat -> consultas as variaveis que contem no arquivo .mat 
+'''
+
+altura_significativa = sio.loadmat('hs_copa.mat')
+
+hs_teste = altura_significativa['HS_20150923_120000']
+hs_teste = np.float64(hs_teste)
+
+plt.contourf(hs_teste)
+plt.colorbar()
+plt.title('Altura significativa de ondas - Baia de Guanabara')
+
+
+
+plt.show()
