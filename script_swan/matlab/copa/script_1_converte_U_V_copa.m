@@ -4,14 +4,14 @@ mypath='/home/rafael/Documentos/lamce/swan/simulacoes_swan/copacabana_cob';
 
 hoje = datenum(date);
 
-load(fullfile(mypath,datestr(hoje,'yyyymmdd'),'dir_copa.mat'))
+load(fullfile(mypath,datestr(hoje,'yyyymmdd'),'dir_copa.mat'));
 
 
 
 for j = hoje:1/8:hoje+5-3/24
     
      eval(['DIR_',datestr(j,'yyyymmdd_HHMMSS'),' = double(DIR_',datestr(j,'yyyymmdd_HHMMSS'),');'])
-end
+end;
 
 x1 = 91;
 x2 = 120;

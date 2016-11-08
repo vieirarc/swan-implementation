@@ -8,7 +8,7 @@ hoje = datenum(date);
 
 for j = hoje:1/8:hoje+5-3/24
     
-     eval(['HS_',datestr(j,'yyyymmdd_HHMMSS'),' = double(HS_',datestr(j,'yyyymmdd_HHMMSS'),');'])
+     eval(['HS_',datestr(j,'yyyymmdd_HHMMSS'),' = double(HS_',datestr(j,'yyyymmdd_HHMMSS'),');']);
 end
 
 x1 = 91;
@@ -19,13 +19,13 @@ y2 = 170;
 for j = hoje:1/8:hoje+5-3/24
     
      eval(['HS_',datestr(j,'yyyymmdd_HHMMSS'),' = HS_',datestr(j,'yyyymmdd_HHMMSS'),'(x1:x2,y1:y2);'])
-end
+end;
 
 
 
 %********RECORTAR LON_LAT COPA*********%
-load (fullfile(pathbat,'lon_100_bg.prn'))
-load (fullfile(pathbat,'lat_100_bg.prn'))
+load (fullfile(pathbat,'lon_100_bg.prn'));
+load (fullfile(pathbat,'lat_100_bg.prn'));
 
 lon_100_copa = lon_100_bg(x1:x2,y1:y2);
 lat_100_copa = lat_100_bg(x1:x2,y1:y2);
@@ -43,11 +43,11 @@ for j = hoje:1/8:hoje+5-3/24
 eval(['HS_20_',datestr(j,'yyyymmdd_HHMMSS'),  '=griddata(lon_100_copa,lat_100_copa,HS_',datestr(j,'yyyymmdd_HHMMSS'),',mlon20_copa,mlat20_copa);'])
 eval(['uvel_20_',datestr(j,'yyyymmdd_HHMMSS'),'=griddata(lon_100_copa,lat_100_copa,uvel_',datestr(j,'yyyymmdd_HHMMSS'),',mlon20_copa,mlat20_copa);'])
 eval(['vvel_20_',datestr(j,'yyyymmdd_HHMMSS'),'=griddata(lon_100_copa,lat_100_copa,vvel_',datestr(j,'yyyymmdd_HHMMSS'),',mlon20_copa,mlat20_copa);'])
-end
+end;
 
 %***********GERAR FIGURAS E SAVAR - HS_DIR 20 METROS - COPA*******%
 
-load (fullfile(pathbat,'lat_lon_costa_copa'))
+load (fullfile(pathbat,'lat_lon_costa_copa'));
 
 
 scale = 0.5;
