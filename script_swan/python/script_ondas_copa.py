@@ -1,6 +1,7 @@
+
 '''
 Script para gerar as imagens de altura significativa e 
-direcao de ondas para a praia de Copacabana. As imagens
+direcao de ondas para a PRAIA DE COPACABANA. As imagens
 sao geradas a partir dos resultados do modelo de propagacao
 de ondas SWAN.
 
@@ -36,7 +37,6 @@ hs_copa = sio.loadmat(path +'/hs_copa.mat')
 del hs_copa['__header__'],hs_copa['__globals__'],hs_copa['__version__'], hs_copa['HS_20160915_210000']
 
 hs_copa = {key:value[91:121,134:171] for key, value in hs_copa.items()}
-hs_copa = collections.OrderedDict(sorted(hs_copa.items()))
 
 # coordenadas
 coord_copa = sio.loadmat('/home/rafael/Documentos/lamce/dados/bat_100_bg/lon_lat_100_bg.mat')
@@ -58,7 +58,7 @@ del lista_crescente[0]
 
 # direcao de ondas
 dir_copa = sio.loadmat(path+'/dir_copa.mat')
-del dir_copa['__header__'],dir_copa['__globals__'],dir_copa['__version__'],
+del dir_copa['__header__'],dir_copa['__globals__'],dir_copa['__version__'], dir_copa['DIR_20160915_210000']
 
 dir_copa = {key:value[91:121,134:171] for key, value in dir_copa.items()}
 
@@ -73,44 +73,31 @@ for keys, values in dir_copa.items():
 	U, V = intdir2uv(values)
 	u_componente["u_{0}".format(keys[4:])] = U*(-1)
 	v_componente["v_{0}".format(keys[4:])] = V*(-1)
-   
 
-class Variaveis_plotar(object):
-	"""As variaveis estao juntas nessa classe 'Variaveis_plotar' """
-	def __init__(self, hs, u, v):
-		self.hs = dict(hs)
-		self.u = dict(u)
-		self.v = dict(v) 
-	def __iter__(self):
-		return self
-	def next(self): 
-		return self
-		
-	
-variaveis = Variaveis_plotar(hs_copa.items(), u_componente.items(), v_componente.items())
+# ordena as variaveis dos dicionarios
+u_componente = collections.OrderedDict(sorted(u_componente.items()))
+v_componente = collections.OrderedDict(sorted(v_componente.items()))
+hs_copa = collections.OrderedDict(sorted(hs_copa.items()))
+
 
 # gera e salva as imagens no diretorio
 for x in range(40):
-	hs = variaveis.hs.values()[x]
-	u = variaveis.u.values()[x]
-	v = variaveis.v.values()[x]
-	fig = plt.figure()
+	hs = hs_copa.values()[x]
+	u = u_componente.values()[x]
+	v = v_componente.values()[x]
+	fig = plt.figure()	
 	plt.contourf(lon_copa, lat_copa, hs)
 	plt.quiver(lon_copa, lat_copa, u, v)
 	plt.plot(coastline_copa_lon, coastline_copa_lat, 'k')	
 	m = cm.ScalarMappable(cmap=cm.jet) #	mapeia as matrizes hs para usar o colorbar
 	m.set_array(hs)
 	plt.colorbar(m)
-	fig.canvas.set_window_title(variaveis.hs.keys()[x][3:14])
+	fig.canvas.set_window_title(hs_copa.keys()[x][3:14])
 	ax = plt.gca()
 	ax.get_xaxis().get_major_formatter().set_useOffset(False)
 	ay = plt.gca()
 	ay.get_yaxis().get_major_formatter().set_useOffset(False)
-	plt.title('Altura significativa de onda - Praia de Copacabana - %s/%s/%s - %sH ' %(variaveis.hs.keys()[x][9:11], \
-		variaveis.hs.keys()[x][7:9], variaveis.hs.keys()[x][3:7], variaveis.hs.keys()[x][12:14]), fontsize=10.5)
-	plt.savefig(os.path.join(path_save, '%s%s%s_%sH' %(variaveis.hs.keys()[x][3:7], variaveis.hs.keys()[x][7:9], \
-		variaveis.hs.keys()[x][9:11], variaveis.hs.keys()[x][12:14])))
-
-'''
-Falta conferir a ordem que as variaveis estao sendo plotadas
-'''
+	plt.title('Altura significativa e direcao de onda - Praia de Copacabana - %s/%s/%s - %sH ' %(hs_copa.keys()[x][9:11], \
+		hs_copa.keys()[x][7:9], hs_copa.keys()[x][3:7], hs_copa.keys()[x][12:14]), fontsize=10.5)
+	plt.savefig(os.path.join(path_save, '%s%s%s_%sH' %(hs_copa.keys()[x][3:7], hs_copa.keys()[x][7:9], \
+		hs_copa.keys()[x][9:11], hs_copa.keys()[x][12:14])))
