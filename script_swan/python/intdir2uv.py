@@ -1,4 +1,4 @@
-def intdir2uv(int, dir, decl_mag=0, ang_rot=0):
+def intdir2uv(dir, decl_mag=0, ang_rot=0):
 	"""
 	FUNCAO INTDIR2UV Decompoem o vetor corrente definido pela intensidade
 	                   e direcao (ref. Norte -> Este) considerando a 
@@ -23,8 +23,8 @@ def intdir2uv(int, dir, decl_mag=0, ang_rot=0):
 	
 	ang_rot = (ang_rot)*np.pi/180
 
-	u=int*np.sin(dir)
-	v=int*np.cos(dir)
+	u=np.sin(dir)
+	v=np.cos(dir)
 
 	U = u*np.cos(ang_rot) - v*np.sin(ang_rot)
 	V = u*np.sin(ang_rot) + v*np.cos(ang_rot)
